@@ -1,24 +1,33 @@
 /*global process */
-var http = require('http');
+var cluster = require('cluster');
 var express = require('express');
 var jsforceAjaxProxy = require('jsforce-ajax-proxy');
 
-var app = express();
-
-app.configure(function () {
+if (cluster.isMaster) {
+  var _cpus = process.argv[3] || require('os').cpus().length;
+  // create a worker for each CPU
+  for (var i = 0; i < _cpus; i += 1) {
+      cluster.fork();
+  }
+  // When a worker dies create another one
+  cluster.on('exit', function(worker) {
+    console.log('worker ' + worker.id +  ' died');
+    cluster.fork();
+  });
+} else {
+  // create a new Express application
+  var app = express();
+  //Set Port
   app.set('port', process.env.PORT || 3123);
-});
+  //Get proxy request
+  app.all('/proxy/?*', jsforceAjaxProxy({ enableCORS: true }));
+  //Test APi
+  app.get('/', function(req, res) {
+    res.send('JSforce AJAX Proxy');
+  });
 
-app.configure('development', function () {
-  app.use(express.errorHandler());
-});
-
-app.all('/proxy/?*', jsforceAjaxProxy({ enableCORS: true }));
-
-app.get('/', function(req, res) {
-  res.send('JSforce AJAX Proxy');
-});
-
-http.createServer(app).listen(app.get('port'), function () {
-  console.log("Express server listening on port " + app.get('port'));
-});
+  // bind to a port and start server
+  app.listen(app.get('port'), function () {
+    console.log("Express server listening on port " + app.get('port'));
+  });
+}

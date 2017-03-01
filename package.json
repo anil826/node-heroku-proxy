@@ -3,9 +3,9 @@
   "description": "packages required to run the examples",
   "version": "0.0.0",
   "dependencies": {
-    "debug": "^2.1.2",
-    "express": "^3.12.1",
-    "request": "^2.36.0",
-    "jsforce-ajax-proxy": "1.0.0"
+    "debug": "2.1.2",
+    "express": "4.14.1",
+    "jsforce-ajax-proxy": "1.0.0",
+    "request": "2.36.0"
   }
 }
