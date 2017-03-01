@@ -6,6 +6,8 @@
     "debug": "2.1.2",
     "express": "4.14.1",
     "jsforce-ajax-proxy": "1.0.0",
-    "request": "2.36.0"
+    "request": "2.36.0",
+    "cors : "2.8.1"
+
   }
 }
