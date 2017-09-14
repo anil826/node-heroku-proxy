@@ -2,6 +2,10 @@
   "name": "http-proxy-examples",
   "description": "packages required to run the examples",
   "version": "0.0.0",
+  "engines": {
+    "node": "v6.11.3",
+    "npm": "3.10.10"
+  },
   "dependencies": {
     "debug": "2.1.2",
     "express": "4.14.1",

@@ -5,7 +5,7 @@ var jsforceAjaxProxy = require('jsforce-ajax-proxy');
 var cors = require('cors')
 
 //Set cros configuration
-var whitelist = ['https://app.formyoula.com', 'https://formyoula-dev1.herokuapp.com']
+var whitelist = ['https://app.formyoula.com', 'https://formyoula-dev1.herokuapp.com',"https://qform-builder-rumdumdum-15.c9.io"]
 var corsOptions = {
   origin: function (origin, callback) {
     var originIsWhitelisted = whitelist.indexOf(origin) !== -1
