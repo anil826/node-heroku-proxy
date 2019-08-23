@@ -6,6 +6,11 @@ var cors = require('cors');
 
 //Set cros configuration
 var whitelist = ['https://app.formyoula.com', 'https://beta.formyoula.com', 'https://eu.formyoula.com', 'https://formyoula-preproduction.herokuapp.com', 'https://formyoula-dev1.herokuapp.com', 'https://formyoula-mobile-dev-richard-rumdumdum.c9.io'];
+//Enable local testing
+if ( process.env.ENABLE_LOCAL_TESTING ) {
+  whitelist.push('http://localhost:8080');
+}
+//Create CORS logic
 var corsOptions = {
   origin: function (origin, callback) {
     var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
