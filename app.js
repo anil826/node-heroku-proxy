@@ -39,6 +39,7 @@ if (cluster.isMaster) {
   app.get('/', function(req, res) {
     res.send('JSforce AJAX Proxy');
   });
+  app.get('/online', cors(corsOptions), function(req, res) {res.send({"result" : 'Proxy Server Working'});});
 
   // bind to a port and start server
   app.listen(app.get('port'), function () {
