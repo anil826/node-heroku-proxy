@@ -15,7 +15,8 @@ var corsOptions = {
   origin: function (origin, callback) {
     console.log(origin);
     var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
-    callback(originIsWhitelisted ? null : 'Bad Request', originIsWhitelisted);
+    console.log(originIsWhitelisted);
+    callback( originIsWhitelisted ? null : 'Bad Request', originIsWhitelisted );
   }
 };
 if (cluster.isMaster) {
@@ -40,6 +41,7 @@ if (cluster.isMaster) {
   app.get('/', function(req, res) {
     res.send('OK');
   });
+  //Route for cheecking if proxy is functional
   app.get('/online', cors(corsOptions), function(req, res) {res.send({"result" : 'Proxy Server Working'});});
 
   // bind to a port and start server
