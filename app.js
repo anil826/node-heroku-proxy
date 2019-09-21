@@ -13,9 +13,7 @@ if ( process.env.ENABLE_LOCAL_TESTING ) {
 //Create CORS logic
 var corsOptions = {
   origin: function (origin, callback) {
-    console.log(origin);
     var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
-    console.log(originIsWhitelisted);
     callback( originIsWhitelisted ? null : 'Bad Request', originIsWhitelisted );
   }
 };
@@ -38,12 +36,9 @@ if (cluster.isMaster) {
   //Get proxy request
   app.all('/proxy/?*', cors(corsOptions), jsforceAjaxProxy({ enableCORS: true }));
   //Test APi
-  app.get('/', function(req, res) {
+  app.get('/online', function(req, res) {
     res.send('OK');
   });
-  //Route for cheecking if proxy is functional
-  app.get('/online', cors(corsOptions), function(req, res) {res.send({"result" : 'Proxy Server Working'});});
-
   // bind to a port and start server
   app.listen(app.get('port'), function () {
     console.log("Express server listening on port " + app.get('port'));
