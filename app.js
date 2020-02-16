@@ -34,7 +34,7 @@ if (cluster.isMaster) {
   //Set Port
   app.set('port', process.env.PORT || 3123);
   //Get proxy request
-  app.all('/proxy/?*', cors(corsOptions), jsforceAjaxProxy({ enableCORS: true }));
+  app.all('/proxy/?*', jsforceAjaxProxy({ enableCORS: false }));
   //Test APi
   app.get('/online', function(req, res) {
     res.send('OK');
