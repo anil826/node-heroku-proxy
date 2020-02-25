@@ -5,7 +5,7 @@ var jsforceAjaxProxy = require('jsforce-ajax-proxy');
 var cors = require('cors');
 
 //Set cros configuration
-var whitelist = ['https://app.formyoula.com', 'https://beta.formyoula.com', 'https://eu.formyoula.com', 'https://formyoula-preproduction.herokuapp.com', 'https://formyoula-dev1.herokuapp.com', 'https://formyoula-mobile-dev-richard-rumdumdum.c9.io'];
+var whitelist = ['https://app.formyoula.com', 'https://survey.formyoula.com', 'https://beta.formyoula.com', 'https://eu.formyoula.com', 'https://formyoula-preproduction.herokuapp.com', 'https://formyoula-dev1.herokuapp.com'];
 //Enable local testing
 if ( process.env.ENABLE_LOCAL_TESTING ) {
   whitelist.push('http://localhost:8080');
@@ -34,7 +34,7 @@ if (cluster.isMaster) {
   //Set Port
   app.set('port', process.env.PORT || 3123);
   //Get proxy request
-  app.all('/proxy/?*', cors(corsOptions), jsforceAjaxProxy({ enableCORS: true }));
+  app.all('/proxy/?*', jsforceAjaxProxy({ enableCORS: false }));
   //Test APi
   app.get('/online', function(req, res) {
     res.send('OK');
