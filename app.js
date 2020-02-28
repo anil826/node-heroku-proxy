@@ -42,17 +42,28 @@ if (cluster.isMaster) {
   app.use('/api/?*', cors(corsOptions), createProxyMiddleware({
     target: 'http://example.com', changeOrigin: true, 
     router : function(req) {
-      //Get target form parameters
+      console.log(req.rawBody)
+      //Get target form parameters wiht query string
       var newTarget = req.url.replace("/api/", "");
       return newTarget;
     },
    ignorePath: true,
-   //forward : true,
    onError: function onError(err, req, res) {
       res.writeHead(500, {
         'Content-Type': 'text/plain'
       });
       res.end('Something went wrong. Please pass a valid URL with required parameters.');
+    },
+    onProxyReq : function onProxyReq(err, req, res) {
+      //Set body
+      if (req.body) {
+          let bodyData = JSON.stringify(req.body);
+          // incase if content-type is application/x-www-form-urlencoded -> we need to change to application/json
+          req.setHeader('Content-Type','application/json');
+          req.setHeader('Content-Length', Buffer.byteLength(bodyData));
+          // stream the content
+          req.write(bodyData);
+      }
     }
   }));
 
