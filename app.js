@@ -42,7 +42,7 @@ if (cluster.isMaster) {
   app.use('/api/?*', cors(corsOptions), createProxyMiddleware({
     target: 'http://example.com', changeOrigin: true, 
     router : function(req) {
-      //Get target form parameters wiht query string
+      //Get target form parameters with query string
       var newTarget = req.url.replace("/api/", "");
       return newTarget;
     },
@@ -56,13 +56,18 @@ if (cluster.isMaster) {
     onProxyReq : function onProxyReq(proxyReq, req, res) {
       //Set body
       if (req.method == 'POST' && req.body) {
-          let bodyData = JSON.stringify(req.body);
+          // URI encode JSON object
+          var body = Object.keys(req.body)
+            .map(function(key) {
+              return encodeURIComponent(key) + '=' + encodeURIComponent(body[key]);
+            })
+            .join('&');          
           // Update header
           proxyReq.setHeader('content-type', 'application/x-www-form-urlencoded');
           proxyReq.setHeader('content-length', body.length);
-          proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
+          proxyReq.setHeader('Content-Length', Buffer.byteLength(body));
           // stream the content
-          proxyReq.write(bodyData);
+          proxyReq.write(body);
           proxyReq.end();
       }
     }
