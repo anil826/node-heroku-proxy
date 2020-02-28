@@ -42,7 +42,6 @@ if (cluster.isMaster) {
   app.use('/api/?*', cors(corsOptions), createProxyMiddleware({
     target: 'http://example.com', changeOrigin: true, 
     router : function(req) {
-      console.log(req.rawBody)
       //Get target form parameters wiht query string
       var newTarget = req.url.replace("/api/", "");
       return newTarget;
@@ -54,15 +53,17 @@ if (cluster.isMaster) {
       });
       res.end('Something went wrong. Please pass a valid URL with required parameters.');
     },
-    onProxyReq : function onProxyReq(err, req, res) {
+    onProxyReq : function onProxyReq(proxyReq, req, res) {
       //Set body
-      if (req.body) {
+      if (req.method == 'POST' && req.body) {
           let bodyData = JSON.stringify(req.body);
-          // incase if content-type is application/x-www-form-urlencoded -> we need to change to application/json
-          req.setHeader('Content-Type','application/json');
-          req.setHeader('Content-Length', Buffer.byteLength(bodyData));
+          // Update header
+          proxyReq.setHeader('content-type', 'application/x-www-form-urlencoded');
+          proxyReq.setHeader('content-length', body.length);
+          proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
           // stream the content
-          req.write(bodyData);
+          proxyReq.write(bodyData);
+          proxyReq.end();
       }
     }
   }));
