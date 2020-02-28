@@ -47,6 +47,7 @@ if (cluster.isMaster) {
       return newTarget;
     },
    ignorePath: true,
+   forward : true,
    onError: function onError(err, req, res) {
       res.writeHead(500, {
         'Content-Type': 'text/plain'
