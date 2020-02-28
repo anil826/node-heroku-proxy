@@ -52,24 +52,6 @@ if (cluster.isMaster) {
         'Content-Type': 'text/plain'
       });
       res.end('Something went wrong. Please pass a valid URL with required parameters.');
-    },
-    onProxyReq : function onProxyReq(proxyReq, req, res) {
-      //Set body
-      if (req.method == 'POST' && req.body) {
-          // URI encode JSON object
-          var body = Object.keys(req.body)
-            .map(function(key) {
-              return encodeURIComponent(key) + '=' + encodeURIComponent(body[key]);
-            })
-            .join('&');          
-          // Update header
-          proxyReq.setHeader('content-type', 'application/x-www-form-urlencoded');
-          proxyReq.setHeader('content-length', body.length);
-          proxyReq.setHeader('Content-Length', Buffer.byteLength(body));
-          // stream the content
-          proxyReq.write(body);
-          proxyReq.end();
-      }
     }
   }));
 
