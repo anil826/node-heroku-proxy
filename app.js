@@ -36,7 +36,10 @@ if (cluster.isMaster) {
   // Create a new Express application
   var app = express();
   //Parse application/x-www-form-urlencoded
-  app.use(bodyParser.urlencoded({ extended: true, limit: '10mb', parameterLimit: 1000000}))
+  // create application/json parser
+  var jsonParser = bodyParser.json()
+  // create application/x-www-form-urlencoded parser
+  var urlencodedParser = bodyParser.urlencoded({ extended: false })
   //Set Port
   app.set('port', process.env.PORT || 3123);
   //Get proxy request
@@ -58,7 +61,7 @@ if (cluster.isMaster) {
       });
       res.end('Something went wrong. Please pass a valid URL with required parameters.');
     }
-  }));
+  }), jsonParser, urlencodedParser);
   
   //Parse application/x-www-form-urlencoded
   app.use(bodyParser.urlencoded({ extended: true, limit: '10mb', parameterLimit: 1000000}))
