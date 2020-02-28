@@ -3,6 +3,7 @@ var cluster = require('cluster');
 var express = require('express');
 var jsforceAjaxProxy = require('jsforce-ajax-proxy');
 var cors = require('cors');
+var bodyParser = require('body-parser')
 var { createProxyMiddleware } = require('http-proxy-middleware');
 
 //Get white list form env varaiable
@@ -34,12 +35,14 @@ if (cluster.isMaster) {
 } else {
   // Create a new Express application
   var app = express();
+  //Parse application/x-www-form-urlencoded
+  app.use(bodyParser.urlencoded({ extended: true, limit: '10mb', parameterLimit: 1000000}))
   //Set Port
   app.set('port', process.env.PORT || 3123);
   //Get proxy request
   app.all('/proxy/?*', cors(corsOptions), jsforceAjaxProxy({ enableCORS: true }));
   //Add proxy for api call other then salesforce
-  app.use('/api/?*', cors(corsOptions), createProxyMiddleware({
+  app.use('/api/?*', createProxyMiddleware({
     target: 'http://example.com', changeOrigin: true, 
     router : function(req) {
       //Get target form parameters with query string
@@ -54,7 +57,11 @@ if (cluster.isMaster) {
       res.end('Something went wrong. Please pass a valid URL with required parameters.');
     }
   }));
+  
+  //Parse application/x-www-form-urlencoded
+  app.use(bodyParser.urlencoded({ extended: true, limit: '10mb', parameterLimit: 1000000}))
 
+  
   app.get('/online', function(req, res) {
     console.log(req.query);
     res.send('OK');
