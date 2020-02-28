@@ -42,11 +42,13 @@ if (cluster.isMaster) {
   //Get proxy request
   app.all('/proxy/?*', cors(corsOptions), jsforceAjaxProxy({ enableCORS: true }));
   //Add proxy for api call other then salesforce
-  app.use('/api/?*', cors(corsOptions), createProxyMiddleware({
+  app.use('/api/?*',  createProxyMiddleware({
     target: 'http://example.com', changeOrigin: true, 
     router : function(req) {
       //Get target form parameters with query string
+      console.log(newTarget, req.url, req.params)
       var newTarget = req.url.replace("/api/", "");
+      console.log(newTarget, req.url, req.params)
       return newTarget;
     },
    ignorePath: true,
