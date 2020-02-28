@@ -10,9 +10,9 @@ var whitelist = process.env.WHITE_LIST ? process.env.WHITE_LIST.split(",") : '';
 //Set cros configuration
 whitelist = whitelist || ['https://app.formyoula.com', 'https://survey.formyoula.com', 'https://beta.formyoula.com', 'https://eu.formyoula.com', 'https://formyoula-preproduction.herokuapp.com', 'https://formyoula-dev1.herokuapp.com'];
 //Enable local testing
-if ( process.env.ENABLE_LOCAL_TESTING ) {
-  whitelist.push('http://localhost:8080');
-}
+//if ( process.env.ENABLE_LOCAL_TESTING ) {
+  whitelist.push('http://localhost:8080',"https://bda0522f73c14a0d9751696923ccea6d.vfs.cloud9.us-east-2.amazonaws.com");
+//}
 //Create CORS logic
 var corsOptions = {
   origin: function (origin, callback) {
@@ -39,15 +39,15 @@ if (cluster.isMaster) {
   //Get proxy request
   app.all('/proxy/?*', cors(corsOptions), jsforceAjaxProxy({ enableCORS: true }));
   //Add proxy for api call other then salesforce
-  app.use('/api/?*', cors(corsOptions), createProxyMiddleware({
+  app.use('/api/?*',createProxyMiddleware({
     target: 'http://example.com', changeOrigin: true, 
     router : function(req) {
       //Get target form parameters
-      var newTarget = req.params[0];
+      var newTarget = req.url.replace("/api/", "");
       return newTarget;
     },
    ignorePath: true,
-   forward : true,
+   //forward : true,
    onError: function onError(err, req, res) {
       res.writeHead(500, {
         'Content-Type': 'text/plain'
@@ -57,6 +57,12 @@ if (cluster.isMaster) {
   }));
 
   app.get('/online', function(req, res) {
+    console.log(req.query);
+    res.send('OK');
+  });
+  
+  app.post('/online', function(req, res) {
+    console.log(req.body);
     res.send('OK');
   });
   // bind to a port and start server
