@@ -49,9 +49,7 @@ if (cluster.isMaster) {
     target: 'http://example.com', changeOrigin: true, 
     router : function(req) {
       //Get target form parameters with query string
-      console.log(newTarget, req.url, req.params)
       var newTarget = req.url.replace("/api/", "");
-      console.log(newTarget, req.url, req.params)
       return newTarget;
     },
    ignorePath: true,
