@@ -66,16 +66,7 @@ if (cluster.isMaster) {
   //Parse application/x-www-form-urlencoded
   app.use(bodyParser.urlencoded({ extended: true, limit: '10mb', parameterLimit: 1000000}))
 
-  
-  app.get('/online', function(req, res) {
-    console.log(req.query);
-    res.send('OK');
-  });
-  
-  app.post('/online', function(req, res) {
-    console.log(req.body);
-    res.send('OK');
-  });
+
   // bind to a port and start server
   app.listen(app.get('port'), function () {
     console.log("Express server listening on port " + app.get('port'));
