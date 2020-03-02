@@ -10,6 +10,7 @@ var whitelist = ['https://app.formyoula.com', 'https://survey.formyoula.com', 'h
 if ( process.env.ENABLE_LOCAL_TESTING ) {
   whitelist.push('http://localhost:8080');
 }
+
 //Create CORS logic
 var corsOptions = {
   origin: function (origin, callback) {
@@ -39,7 +40,7 @@ if (cluster.isMaster) {
   app.get('/online', function(req, res) {
     res.send('OK');
   });
-  // bind to a port and start server
+  // Bind to a port and start server
   app.listen(app.get('port'), function () {
     console.log("Express server listening on port " + app.get('port'));
   });
