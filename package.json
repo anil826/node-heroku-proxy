@@ -3,15 +3,16 @@
   "description": "packages required to run the examples",
   "version": "0.0.0",
   "engines": {
-    "node": "v6.11.3",
-    "npm": "3.10.10"
+    "node": "v10.18.1",
+    "npm": "6.13.4"
   },
   "dependencies": {
+    "body-parser": "1.19.0",
+    "cors": "2.8.1",
     "debug": "2.1.2",
     "express": "4.14.1",
+    "http-proxy-middleware": "1.0.0",
     "jsforce-ajax-proxy": "1.0.0",
-    "request": "2.36.0",
-    "cors" : "2.8.1"
-
+    "request": "2.36.0"
   }
 }

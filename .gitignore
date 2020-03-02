@@ -1,0 +1,10 @@
+node_modules
+config.local.js
+.DS_Store
+public/uploads
+newrelic_agent.log
+.c9
+dump.rdb
+.env
+results.txt
+npm-debug.log
