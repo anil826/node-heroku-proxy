@@ -9,7 +9,7 @@ var { createProxyMiddleware } = require('http-proxy-middleware');
 //Get white list form env varaiable
 var whitelist = process.env.WHITE_LIST ? process.env.WHITE_LIST.split(",") : '';
 //Set cros configuration
-whitelist = whitelist || ['https://app.formyoula.com', 'https://survey.formyoula.com', 'https://beta.formyoula.com', 'https://eu.formyoula.com', 'https://formyoula-preproduction.herokuapp.com', 'https://formyoula-dev1.herokuapp.com'];
+whitelist = whitelist || ['https://app.formyoula.com', 'https://survey.formyoula.com', 'https://community.formyoula.com', 'https://sandbox.formyoula.com', 'https://beta.formyoula.com', 'https://eu.formyoula.com', 'https://formyoula-preproduction.herokuapp.com', 'https://formyoula-dev1.herokuapp.com'];
 //Enable local testing
 if ( process.env.ENABLE_LOCAL_TESTING ) {
   whitelist.push('http://localhost:8080');
