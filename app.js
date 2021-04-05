@@ -14,6 +14,11 @@ whitelist = whitelist || ['https://app.formyoula.com', 'https://survey.formyoula
 if ( process.env.ENABLE_LOCAL_TESTING ) {
   whitelist.push('http://localhost:8080');
 }
+//Enable for 3rd party API
+if ( process.env.ENABLE_CORS_FOR_CLIENT ) {
+  //Merge all the 3rd party domains
+  whitelist = whitelist.concat( process.env.AVAILABLE_CLIENT_DOMAINS.split(',') );
+}
 //Create CORS logic
 var corsOptions = {
   origin: function (origin, callback) {
